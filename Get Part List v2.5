@@ -1,0 +1,126 @@
+Sub AS400_Inquiry()
+
+'Step1 : Narik data dari AS400, dan Trim spasi-spasi kosong di AS400
+    
+    'Shutdown Enable Events, Calculation, and Screen Updating for Faster Query
+    Application.EnableEvents = False
+    Application.Calculation = xlCalculationManual
+    Application.ScreenUpdating = False
+
+    'Definition only for QE User (QE + Inspector)
+    Dim user As String
+    Dim users(13) As String
+        users(0) = "DELINGGS"   'Lingga
+        users(1) = "ALDIBRAG"   'Aldi
+        users(2) = "SABATHID"   'Nata
+        users(3) = "MANIKURU"   'Urupi
+        users(4) = "HERYANTY"   'Yandhika
+        users(5) = "SARYCIND"   'Cindy
+        users(6) = "NURROHMN"   'Nur Rohmah
+        users(7) = "RENITANO"   'Norma
+        users(8) = "SETYANII"   'Ika
+        users(9) = "INAYAHNU"   'Inayah
+        users(10) = "KINTARED"  'Diko
+        users(11) = "JAFARAH8"  'Jafar
+        users(12) = "FAJARISM"  'Mas Ma'il
+    user = UCase(Environ("username"))
+    Dim access As Boolean
+    Dim a As Integer
+    access = False
+    For a = 0 To 12
+        If users(a) = user Then
+        access = True
+        Exit For
+        End If
+    Next
+
+    'Validation Access to Run Query
+    If access = False Then
+        MsgBox "The user " & user & " does not have access to this button.", vbInformation
+    ElseIf access = True Then
+    
+        'Clear Contents in Main Table
+        Range("CopyAS400:I" & 1000).Offset(1, 0).ClearContents
+        Range("CopyAS400:I" & 1000).Offset(1, 0).Interior.Color = RGB(255, 255, 255)
+    
+        'AS400 User & Password
+        user = Range("L1").Value
+        pass = Range("L2").Value
+        uname = Right(UCase(Environ("userprofile")), 8)
+        PARA_System = "ASIAMFG"
+        
+        'Define Connection to ODBC AS400
+        Dim Con As New ADODB.Connection
+        Dim Cmd As New ADODB.Command
+        Dim rs As ADODB.Recordset
+        Dim AS400_Path As String
+        Dim pe As String
+        Dim pctCompl As Single
+        
+        'Define SKU & Assortment Location
+        x = Left(Range("E2"), 5)
+        Y = Right(Range("E2"), 4)
+        Z = Left(Range("G2"), 5)
+        U = Right(Range("G2"), 4)
+        
+        'Open Conection for AS400 (This feature can only be use once, so if array, always start from below this feature
+        Con.Open "Driver={Client Access ODBC Driver (32-bit)}" & _
+                ";System=" & PARA_System & _
+                ";Uid=" & user & _
+                ";Pwd=" & pass
+            
+        'Query
+        Set Cmd.ActiveConnection = Con
+        
+        Cmd.CommandText = "SELECT TRIM(LEV2PD), TRIM(LEV3PD), TRIM(CITMPD), TRIM(CDESPD) " & _
+        "FROM INFLIBPRA.PL1PLDTL " & _
+        "JOIN INFLIBPRA.PL1PLMST ON CMPYPD = CMPYPL AND TOYNPD = TOYNPL AND PARTPD = PARTPL AND RVCDPD = RVCDPL " & _
+        "JOIN INFLIBPRA.INMITEMF AS IIF ON CMPYPD = IIF.CMPYIT AND CITTPD = IIF.TOYNIT AND CITPPD = IIF.PARTIT " & _
+        "JOIN INFLIBPRA.INMITEM$ AS IIS ON CMPYPD = IIS.CMPYIT AND CITTPD = IIS.TOYNIT AND CITPPD = IIS.PARTIT " & _
+        "WHERE CMPYPL = 'PTMI' AND STATPL = 'A' AND (TOYNPL = '" & x & "' OR TOYNPL = '" & Z & "') AND (PARTPL = '" & Y & "' OR PARTPL = '" & U & "') " & _
+        "AND (LEV2PD <> '' OR LEV3PD <> '') AND CITPPD <> '9991' AND MEASPD = 'EA' AND ((COMMIT IN ('G','U','W','T') AND CMIDIT NOT IN('V1','D1')) OR (CITTPD = '" & x & "' AND COMMIT = 'P' AND CMIDIT IN ('J3','B','C'))) " & _
+        "ORDER BY PARTPD DESC " _
+    
+        Set rs = Nothing
+        Set rs = Cmd.Execute()
+            
+        'rs.EOF define the End of File, if EOF is False, that means data exist within the data source
+        If rs.EOF = False Then
+            Range("CopyAS400").Offset(1, 0).CopyFromRecordset rs
+            l1 = Cells(Rows.Count, 4).End(xlUp).Row
+            Cells(l1 + 1, 4).Value = "MASTER CARTON"
+        End If
+        
+        rs.Close
+        Con.Close
+        Set rs = Nothing
+        Set Con = Nothing
+
+
+        Range("CopyAS400").Offset(1, 0).Select
+            Dim i, j, lastrow, lr1 As Integer
+            lr1 = Cells(Rows.Count, 4).End(xlUp).Row
+            Row = ActiveCell.Row
+            
+            'Trim Unnecessary space due to AS400 writing
+                For i = Row To lr1
+                    Cells(i, 5).Value = "No"
+                    
+                    'Shade yellow for level2
+                    If Cells(i, 1).Value <> "" And Cells(i, 2).Value = "" Then
+                    Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 255, 0)
+                    ElseIf Cells(i, 1).Value = "" And Cells(i, 2).Value <> "" Then
+                    Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 255, 255)
+                    End If
+                Next
+            
+        
+        Range("L1:L2").ClearContents
+        
+    End If
+'Enable all Events is a must
+Application.EnableEvents = True
+Application.Calculation = xlCalculationAutomatic
+Application.ScreenUpdating = True
+
+End Sub
