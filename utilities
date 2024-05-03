@@ -1,0 +1,197 @@
+Public Function sqlGetEmployee(strSql)
+'Function untuk menarik nama dan departemen berdasarkan KPK
+
+DataSource = "\\APCKRANEFA01PV\Namlos\ss\nearmiss.mdb"
+'DataSource = "\\apckrmflpt001p\Namlos\Debug\ss\nearmiss.mdb"
+
+Set cn = CreateObject("ADODB.Connection")
+
+strConnetion = "Provider=Microsoft.ACE.OLEDB.12.0;" & _
+"Data Source=" & DataSource & ";"
+
+cn.Open strConnetion
+On Error Resume Next
+'MsgBox strSql
+Set rs = cn.Execute(strSql)
+
+If Err.Number <> 0 Then
+errCode = Err.Number
+sqlGetEmployee = 0
+
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+On Error GoTo 0
+Else
+If rs.EOF And rs.BOF Then
+sqlGetEmployee = rs
+Else
+sqlGetEmployee = rs
+End If
+
+
+
+errCode = Err.Number
+'MsgBox ("error")
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+
+End If
+On Error GoTo 0
+End Function
+Public Function sqlProcess(strSql)
+'fungsi untuk insert data ke sql server Lab
+
+
+Set cn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+strConn = "Driver={SQL Server}; Server=DCKR00802521; Database=MechLab; UID=qa; PWD=Qualitylab1234;"
+
+cn.Open strConn
+
+On Error Resume Next
+
+
+
+rs.Open strSql, cn
+
+If Err.Number <> 0 Then
+errCode = Err.Number
+sqlProcess = 0
+
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+On Error GoTo 0
+Else
+sqlProcess = rs
+errCode = Err.Number
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+
+End If
+On Error GoTo 0
+End Function
+Public Function IsRecordExist(strSql)
+'fungsi untuk cek register number tersedia/tidak di Database Server Lab
+Set cn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+
+strConn = "Driver={SQL Server}; Server=DCKR00802521; Database=MechLab; UID=qa; PWD=Qualitylab1234;"
+
+cn.Open strConn
+
+On Error Resume Next
+
+
+
+rs.Open strSql, cn
+
+If Err.Number <> 0 Then
+errCode = Err.Number
+IsRecordExist = 0
+
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+On Error GoTo 0
+Else
+If rs.EOF And rs.BOF Then
+IsRecordExist = False
+Else
+IsRecordExist = True
+End If
+errCode = Err.Number
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+
+End If
+On Error GoTo 0
+End Function
+Public Function SKUExist(strSql)
+'fungsi untuk cek register number tersedia/tidak di SKU CTForm
+Set cn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+
+strConn = "Driver={SQL Server}; Server=DCKR00802521; Database=QualityEngineeringDB; UID=qa; PWD=Qualitylab1234;"
+
+cn.Open strConn
+
+On Error Resume Next
+
+
+
+rs.Open strSql, cn
+
+If Err.Number <> 0 Then
+errCode = Err.Number
+SKUExist = 0
+
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+On Error GoTo 0
+Else
+If rs.EOF And rs.BOF Then
+SKUExist = False
+Else
+SKUExist = True
+End If
+errCode = Err.Number
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+
+End If
+On Error GoTo 0
+End Function
+Public Function sqlProcessCT(strSql)
+Dim cn As New ADODB.Connection
+Dim rs As New ADODB.Recordset
+Dim strConn As String
+    strConn = "Driver={SQL Server}; Server=DCKR00802521; Database=QualityEngineeringDB; UID=qa; PWD=Qualitylab1234;"
+
+    cn.Open strConn
+    On Error Resume Next
+    rs.Open strSql, cn
+    If Err.Number <> 0 Then
+        Debug.Print ("Error")
+        errCode = Err.Number
+        sqlProcessCT = 0
+        On Error Resume Next
+        Set cn = Nothing
+        cn.Close
+        Set rs = Nothing
+        rs.Close
+        On Error GoTo 0
+    Else
+        sqlProcessCT = rs
+        errCode = Err.Number
+        On Error Resume Next
+        Set cn = Nothing
+        cn.Close
+        Set rs = Nothing
+        rs.Close
+    End If
+    On Error GoTo 0
+
+End Function
