@@ -1,0 +1,154 @@
+Sub A_Input_Database()
+
+'Validate User Access
+Dim user As String
+Dim users(13) As String
+    users(0) = "DELINGGS"
+    users(1) = "ALDIBRAG"
+    users(2) = "SABATHID"
+    users(3) = "MANIKURU"
+    users(4) = "HERYANTY"
+    users(5) = "SARYCIND"
+    users(6) = "NURROHMN"
+    users(7) = "RENITANO"
+    users(8) = "SETYANII"
+    users(9) = "INAYAHNU"
+    users(10) = "KINTARED"  'Diko
+    users(11) = "JAFARAH8"  'Jafar
+    users(12) = "FAJARISM"  'Mas Ma'il
+user = UCase(Environ("username"))
+Dim access As Boolean
+Dim a As Integer
+access = False
+For a = 0 To 12
+    If users(a) = user Then
+    access = True
+    Exit For
+    End If
+Next
+
+If access = False Then
+    MsgBox "The user " & user & " does not have access to this button.", vbInformation
+ElseIf access = True Then
+
+
+'Main Macro
+
+lastrow = Cells(Rows.Count, 4).End(xlUp).Row
+Dim i As Integer
+Dim Path, SKU, Toy As String
+    Range("CopyAS400").Offset(1, 0).Select
+    Row = ActiveCell.Row
+        Assort = Range("G2").Value
+        SKU = Left(Range("E2"), 5)
+        'FEPdate = Range("E3").Value
+        'PPdate = Range("E3").Value
+        FEPdate = ThisWorkbook.Worksheets("Component Testing FEP").Range("E3").Value
+        PPdate = ThisWorkbook.Worksheets("Component Testing PP").Range("E3").Value
+        
+        
+        Sta = Range("A3")
+        
+If (Len(Assort) > 9 Or Len(Assort) = 9) And Range("E3").Value <> "" Then
+
+
+
+    If ActiveSheet.Range("D1").Value = "Component Testing Submission FEP" Then
+        
+        sqlFEP = "SELECT SKU#, Stage FROM [QualityEngineeringDB].[dbo].[ChecklistCT] where SKU# = '" & SKU & "' and Stage = '" & Sta & "' "
+        Debug.Print (sqlFEP)
+        Check1 = SKUExist(sqlFEP)
+            
+            If Not Check1 Then
+                sqlFEP = "INSERT INTO [QualityEngineeringDB].[dbo].[ChecklistCT] (SKU#, Toy, Stage, FEP, PP) Values " _
+                & "('" & SKU & "','" & Assort & "','" & Sta & "','" & FEPdate & "', NULL)"
+                Debug.Print (sqlFEP)
+                Utilities.sqlProcessCT (sqlFEP)
+            End If
+            
+        For i = Row To lastrow
+            pn = Cells(i, 4)
+            referral = Cells(i, 5)
+            stage = Range("A3")
+            Nows = Now()
+    
+                sqlFEP2 = "SELECT SKU, Stage FROM [QualityEngineeringDB].[dbo].[CTForm] WHERE SKU = '" & SKU & "' and partname = '" & pn & "' and Stage  = '" & stage & "' "
+                Debug.Print (sqlFEP2)
+                check2 = SKUExist(sqlFEP2)
+                    
+                    If Not check2 Then
+                    sql = "INSERT INTO [QualityEngineeringDB].[dbo].[CTForm] (sku, partname, Refer, Stage, Date_submitted) VALUES " _
+                    & "('" & SKU & "','" & pn & "','" & referral & "','" & stage & "','" & Nows & "')"
+                    Debug.Print (sqlFEP2)
+                    Utilities.sqlProcessCT (sqlFEP2)
+                    End If
+        Next i
+    
+    Path = "\\Apckranefa01pv\qa\84_QE\QualityEng\2023\Miscellaneous\CT FORM\CT_FEP"
+    Path2 = "\\Apckranefa01pv\qa\Component Testing Checklist\2023\CT_FEP"
+    
+    'Macro to save file to 2 location, Miscllaneous & Checklist in QA
+    Application.DisplayAlerts = False
+    ActiveWorkbook.SaveAs Filename:=Path & "\CT FEP - " & SKU, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+    ActiveWorkbook.SaveAs Filename:=Path2 & "\CT FEP - " & SKU, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+    Application.DisplayAlerts = True
+
+
+
+
+'Continue to save PP File
+
+
+
+
+    ElseIf ActiveSheet.Range("D1").Value = "Component Testing Submission PP" Then
+    
+    sqlPP = "SELECT SKU#, Stage FROM [QualityEngineeringDB].[dbo].[ChecklistCT] where SKU# = '" & SKU & "' and Stage = '" & Sta & "' "
+    Debug.Print (sql)
+    Check3 = SKUExist(sql)
+        
+        If Not Check3 Then
+        sqlPP = "INSERT INTO [QualityEngineeringDB].[dbo].[ChecklistCT] (SKU#, Toy, Stage, FEP, PP) Values " _
+        & "('" & SKU & "','" & Assort & "','" & Sta & "', NULL,'" & PPdate & "')"
+        Debug.Print (sqlPP)
+        Utilities.sqlProcessCT (sqlPP)
+        End If
+        
+    For i = Row To lastrow
+        pn = Cells(i, 4)
+        referral = Cells(i, 5)
+        stage = Range("A3")
+        Nows = Now()
+
+        sqlPP2 = "SELECT SKU, Stage FROM [QualityEngineeringDB].[dbo].[CTForm] WHERE SKU = '" & SKU & "' and partname = '" & pn & "' AND Stage  = '" & stage & "'"
+        Debug.Print (sqlPP2)
+        check4 = SKUExist(sql)
+        
+            If Not check4 Then
+            sqlPP2 = "INSERT INTO [QualityEngineeringDB].[dbo].[CTForm] (sku, partname, Refer, Stage, Date_submitted) VALUES " _
+            & "('" & SKU & "','" & pn & "','" & referral & "','" & stage & "','" & Nows & "')"
+            Debug.Print (sqlPP2)
+            Utilities.sqlProcessCT (sqlPP2)
+            End If
+    Next i
+
+    
+    Path3 = "\\Apckranefa01pv\qa\84_QE\QualityEng\2023\Miscellaneous\CT FORM\CT_PP"
+    Path4 = "\\Apckranefa01pv\qa\Component Testing Checklist\2023\CT_PP"
+    
+    Application.DisplayAlerts = False
+    ActiveWorkbook.SaveAs Filename:=Path3 & "\CT PP - " & SKU, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+    ActiveWorkbook.SaveAs Filename:=Path4 & "\CT PP - " & SKU, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+    Application.DisplayAlerts = True
+
+    End If
+    
+    'Validation that CT Data has been update to SQL Server
+        MsgBox "Data CT has been updated.", vbInformation
+    
+    
+Else: MsgBox "Please Input Assortment Number with the Dash-code or Piloting Date!", vbInformation
+End If
+End If
+
+End Sub
