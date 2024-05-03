@@ -1,0 +1,102 @@
+Sub Deletesemua()
+'Definition only for QE User (QE + Inspector)
+    Dim user As String
+    Dim users(12) As String
+        users(0) = "DELINGGS"   'Lingga
+        users(1) = "ALDIBRAG"   'Aldi
+        users(2) = "SABATHID"   'Nata
+        users(3) = "MANIKURU"   'Urupi
+        users(4) = "HERYANTY"   'Yandhika
+        users(5) = "SARYCIND"   'Cindy
+        users(6) = "NURROHMN"   'Nur Rohmah
+        users(7) = "RENITANO"   'Norma
+        users(8) = "SETYANII"   'Ika
+        users(9) = "INAYAHNU"   'Inayah
+        users(10) = "KINTARED"  'Diko
+        users(11) = "JAFARAH8"  'Jafar
+    user = UCase(Environ("username"))
+    Dim access As Boolean
+    Dim a As Integer
+    access = False
+    For a = 0 To 11
+        If users(a) = user Then
+        access = True
+        Exit For
+        End If
+    Next
+
+    'Validation Access to Run Query
+    If access = False Then
+        MsgBox "The user " & user & " does not have access to this button.", vbInformation
+    ElseIf access = True Then
+
+lastrow = Cells(Rows.Count, 4).End(xlUp).Offset(1).Row
+AnswerYes = MsgBox("Do you Wish to Delete All Data?", vbQuestion + vbYesNo, "User Response")
+    If AnswerYes = vbYes Then
+        Range("CopyAS400").Offset(1, 0).Select
+        Row = ActiveCell.Row
+            Range(Cells(Row, 1), Cells(150, 9)).ClearContents
+            Range(Cells(Row, 1), Cells(150, 9)).FormatConditions.Delete
+            Range(Cells(Row, 13), Cells(150, 23)).ClearContents
+            Range(Cells(Row, 13), Cells(150, 23)).FormatConditions.Delete
+            Range(Cells(Row, 25), Cells(150, 28)).ClearContents
+    Range("CopyAS400:J" & lastrow).Offset(1, 0).Interior.ColorIndex = 0
+    End If
+    
+    End If
+    
+End Sub
+
+
+Sub DeleteRow()
+'Definition only for QE User (QE + Inspector)
+    Dim user As String
+    Dim users(13) As String
+        users(0) = "DELINGGS"   'Lingga
+        users(1) = "ALDIBRAG"   'Aldi
+        users(2) = "SABATHID"   'Nata
+        users(3) = "MANIKURU"   'Urupi
+        users(4) = "HERYANTY"   'Yandhika
+        users(5) = "SARYCIND"   'Cindy
+        users(6) = "NURROHMN"   'Nur Rohmah
+        users(7) = "RENITANO"   'Norma
+        users(8) = "SETYANII"   'Ika
+        users(9) = "INAYAHNU"   'Inayah
+        users(10) = "KINTARED"  'Diko
+        users(11) = "JAFARAH8"  'Jafar
+        users(12) = "FAJARISM"  'Mas Ma'il
+    user = UCase(Environ("username"))
+    Dim access As Boolean
+    Dim a As Integer
+    access = False
+    For a = 0 To 12
+        If users(a) = user Then
+        access = True
+        Exit For
+        End If
+    Next
+
+    'Validation Access to Run Query
+    If access = False Then
+        MsgBox "The user " & user & " does not have access to this button.", vbInformation
+    ElseIf access = True Then
+
+
+
+Dim AnswerYes As String
+Dim AnswerNo As String
+ 
+Row = ActiveCell.Row
+    AnswerYes = MsgBox("Do you Wish to Delete this Part?", vbQuestion + vbYesNo, "User Response")
+        If AnswerYes = vbYes Then
+            Range(Cells(Row, 1), Cells(Row, 10)).Delete
+        End If
+ 
+ 
+ 
+ End If
+ 
+End Sub
+
+
+
