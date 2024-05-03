@@ -1,0 +1,882 @@
+
+
+
+Private Sub a_Click()
+
+    If a.Value = True Then
+        ar.Value = True
+    Else
+        ar.Value = False
+    End If
+
+End Sub
+Private Sub Adhoc_Change()
+If Adhoc = True Then
+        'MsgBox ("Some data may still need to be filled")
+        tp = True
+        toyname.Value = "-"
+        partno.BackColor = vbYellow
+        yy.Value = "-"
+        note1.Value = "-"
+        qty.Value = "-"
+        xx.BackColor = vbYellow
+        xx.Value = "F-Ad Hoc-"
+        
+        nonrap = True
+        nonretain = True
+        
+        il = True
+        
+        dev = True
+        note2 = "Other information avail on LIMS"
+        
+    ElseIf Adhoc = False Then
+        tp = False
+        toyname.Value = ""
+        partno.BackColor = vbWhite
+        yy.Value = ""
+        note1.Value = ""
+        qty.Value = ""
+        xx.BackColor = vbWhite
+        xx.Value = ""
+        
+        nonrap = False
+        nonretain = False
+        
+        il = False
+        
+        dev = False
+        note2 = ""
+End If
+End Sub
+Private Sub b_Click()
+
+    If b.Value = True Then
+        ar.Value = True
+    Else
+        ar.Value = False
+    End If
+
+End Sub
+Private Sub c_Click()
+
+    If c.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+    
+End Sub
+
+Private Sub cfep_Click()
+
+End Sub
+
+Private Sub cpp_Click()
+
+End Sub
+
+Private Sub d_Click()
+
+    If d.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+    
+End Sub
+Private Sub e_Click()
+
+    If e.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+
+Private Sub eastspl_Click()
+
+End Sub
+
+Private Sub ep_Click()
+
+End Sub
+
+Private Sub f_Click()
+
+    If f.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+Private Sub g_Click()
+
+    If g.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+Private Sub h_Click()
+
+    If h.Value = True Then
+        ar.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+Private Sub i_Click()
+
+    If i.Value = True Then
+        hd.Value = True
+        ag.Value = True
+    Else
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+
+Private Sub IDNumber_Change()
+If Len(IDNumber.Value) = 12 Then
+        sql = "SELECT partname, SKU, assortment FROM [QualityEngineeringDB].[dbo].[CTForm] WHERE ctnumber = '" & IDNumber.Value & "' "
+        Debug.Print (sql)
+        Set result = sqlShow(strSql, table)
+        
+        On Error Resume Next
+        
+        'If Not result.EOF And Not result.BOF Then
+         toyname.Value = result(1)
+         partno.Value = result(2)
+         yy.Value = result(3)
+        'End If
+    End If
+'ER:
+'    MsgBox "Employee Not Found"
+End Sub
+Public Function sqlShow(strSql, table)
+Set cn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+
+strConn = "Driver={SQL Server}; Server=APCKRMPTMD01TV,41433; Database=QualityEngineeringDB; UID=qe_user; PWD=Ask$$@2021;"
+
+cn.Open strConn
+On Error Resume Next
+rs.Open strSql, cn
+
+
+If Err.Number <> 0 Then
+errCode = Err.Number
+
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+On Error GoTo 0
+Else
+Range(table).CopyFromRecordset rs
+
+errCode = Err.Number
+On Error Resume Next
+Set cn = Nothing
+cn.Close
+Set rs = Nothing
+rs.Close
+
+End If
+On Error GoTo 0
+End Function
+
+
+Private Sub il_Click()
+
+End Sub
+
+Private Sub Image1_BeforeDragOver(ByVal Cancel As MSForms.ReturnBoolean, ByVal Data As MSForms.DataObject, ByVal x As Single, ByVal Y As Single, ByVal DragState As MSForms.fmDragState, ByVal Effect As MSForms.ReturnEffect, ByVal Shift As Integer)
+
+End Sub
+
+Private Sub j_Click()
+
+    If j.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+Private Sub l_Click()
+
+    If l.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+    
+End Sub
+Private Sub CheckBox1_Click()
+
+    If CheckBox1.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+
+Private Sub Label1_Click()
+
+End Sub
+
+Private Sub Label25_Click()
+
+End Sub
+
+Private Sub Label26_Click()
+
+End Sub
+
+Private Sub Label56_Click()
+
+End Sub
+
+Private Sub Label44_Click()
+
+End Sub
+
+Private Sub Label5_Click()
+
+End Sub
+
+Private Sub mc_Click()
+
+End Sub
+
+Private Sub n_Click()
+
+    If n.Value = True Then
+        ar.Value = True
+        hd.Value = True
+        ag.Value = True
+    Else
+        ar.Value = False
+        hd.Value = False
+        ag.Value = False
+    End If
+
+End Sub
+
+Private Sub namerequestor_Change()
+
+End Sub
+
+Private Sub note1_Change()
+
+End Sub
+
+Private Sub note2_Change()
+
+End Sub
+
+Private Sub o_Click()
+
+    If o.Value = True Then
+        hd.Value = True
+    Else
+        hd.Value = False
+    End If
+
+End Sub
+
+Private Sub p_Click()
+
+    If p.Value = True Then
+        hd.Value = True
+    Else
+        hd.Value = False
+    End If
+
+End Sub
+
+Private Sub partno_Change()
+
+End Sub
+
+Private Sub PRD_QSOP_Change()
+
+End Sub
+
+Private Sub q_Click()
+
+    If q.Value = True Then
+        ar.Value = True
+    Else
+        ar.Value = False
+    End If
+
+End Sub
+Private Sub chkbx4015_Change()
+Dim str As String
+
+If chkbx4015 = True Then
+QSOP4015.Show
+    ElseIf chkbx4015 = False Then
+    MsgBox ("QSOP 4015 is cancelled")
+        If InStr(note2.Value, "{") > 0 And InStr(note2.Value, "}") > InStr(note2.Value, "{") Then
+        str = Left(note2.Value, InStr(note2.Value, "{") - 1) & Mid(note2.Value, InStr(note2.Value, "}") + 1)
+        note2.Value = str
+       
+        End If
+End If
+End Sub
+Private Sub dev_Change()
+    If dev.Value = True Then
+    stage.Value = ""
+    Else
+    stage.Value = "INITIAL"
+    End If
+End Sub
+Private Sub other_Change()
+    If other.Value = True Then
+    stage.Value = ""
+    otherx.Value = ""
+    Else
+    stage.Value = "INITIAL"
+    otherx.Value = ""
+    End If
+End Sub
+
+p
+
+Private Sub regisNum_Change()
+'Dim rand, yr As String
+    
+      sql = "SELECT REGIS_NUM FROM Buffer where REGIS_NUM = '" & regisNum.Value & "'"
+      check = Utilities.IsRecordExist(sql)
+      If check = True Then
+          rand = RandString(3)
+          yr = year(Now)
+          regisNum.Value = yr + "-" + rand
+      End If
+        
+     
+End Sub
+
+Private Sub stage_Change()
+
+End Sub
+
+Private Sub SUBMIT_Click()
+    Application.ScreenUpdating = False
+    Dim answer, cocreq, depdmd As Integer
+    Dim lab As Long
+    Worksheets("Insert").Activate
+    lab = 1
+    
+    If namerequestor = "" And dept = "" Then
+        MsgBox ("Please complete the REQUESTOR data")
+        requestorid.BackColor = vbYellow
+        Exit Sub
+    End If
+    If eastspl = False And westspl = False Then
+        MsgBox ("Please complete the PLANT SAMPLE data")
+        Exit Sub
+    End If
+    
+If Adhoc = False Then
+    If mc = False And tp = False And ms = False Then
+        MsgBox ("Please complete the SAMPLE DESCRIPTION data")
+        Exit Sub
+    End If
+
+    If Len(toyname.Value) < 5 Or Len(partno.Value) > 11 Or qty = "" Or note1 = "" Or yy = "" Then
+        MsgBox ("Please check the SAMPLE DESCRIPTION data, Toy name and Part Number may wrong")
+        toyname.BackColor = vbYellow
+        Exit Sub
+    End If
+        
+    'Check single quotation mark in toy name
+    'Mark (') shall no avail on data, it will cause database storing failure
+    If InStr((toyname.Value), "'") Then
+        MsgBox ("Toy Name should not contain single quation mark (') ")
+        toyname.BackColor = vbYellow
+        Exit Sub
+    End If
+           
+    If InStr((note1.Value), "'") Then
+        MsgBox ("Information data should not contain single quation mark (') ")
+        note1.BackColor = vbYellow
+        Exit Sub
+    End If
+    
+    If InStr((note2.Value), "'") Then
+        MsgBox ("Information data should not contain single quation mark (') ")
+        note2.BackColor = vbYellow
+        Exit Sub
+    End If
+    
+    '\\-----------------------------------------------------------------------//
+           
+    If rap = False And nonrap = False Then
+        MsgBox ("Please complete Toy Type data")
+        Exit Sub
+    End If
+    
+    If retain = False And nonretain = False Then
+        MsgBox ("Please complete Product Type data")
+        Exit Sub
+    End If
+    
+    If ep = False And fep = False And pa = False And pp = False And pq = False And dev = False And otherx = False And ct = False And cds = False Then
+        MsgBox ("Please complete the PURPOSE OF EVALUATION data")
+        Exit Sub
+    End If
+    
+    'JIka Ct refer tidak berisi xxxC/XX dan tomol pq tidak dipilih
+    'If Not ctrefer.Value Like "*C/*" And pq = True Then
+    If ctrefer = "" And pq = True Then
+        MsgBox ("PQ submission contain Torso require Common Torso Referal") & vbNewLine & ("Put the LER# in the CT Refer if Common Torso is required")
+        ctrefer.BackColor = vbYellow
+        Exit Sub
+    End If
+    
+    If ctrefer.Value Like "*/C/*" And typetorso = "" And notype = "" Then
+        MsgBox ("Please complete Common Torso information")
+        typetorso.BackColor = vbYellow
+        notype.BackColor = vbYellow
+        ctrefer.BackColor = vbWhite
+        Exit Sub
+    End If
+    
+    If ctrefer.Value Like "*/c/*" And typetorso = "" And notype = "" Then
+        MsgBox ("Please complete Common Torso information")
+        typetorso.BackColor = vbYellow
+        notype.BackColor = vbYellow
+        ctrefer.BackColor = vbWhite
+        Exit Sub
+    End If
+        
+    If note2 = "" Then
+        MsgBox ("Please complete the PURPOSE OF EVALUATION data")
+        note2.BackColor = vbYellow
+        Exit Sub
+    End If
+    
+    If stage = "" Then
+        MsgBox ("Please select the STAGE")
+        stage.BackColor = vbYellow
+        Exit Sub
+    End If
+        
+    If aa = False And fl = False And a = False And b = False And c = False And d = False And e = False And f = False And g = False And h = False And i = False And j = False And k = False And l = False And m = False And n = False And o = False And p = False And q = False And r = False Then
+        MsgBox ("Please complete the EVALUATION REQUIRED data")
+        Exit Sub
+    End If
+   
+    If PRD_QSOP = "" And Len(PRD_QSOP.Value) < 4 Then
+        MsgBox ("Please complete the EVALUATION REQUIRED:PRD/QSOP NUMBER data")
+        PRD_QSOP.BackColor = vbYellow
+        Exit Sub
+    End If
+       
+    If il = False And el = False Then
+        MsgBox ("Please complete the EVALUATION REQUIRED:PERFORM data")
+        Exit Sub
+    End If
+      
+    If aa.Value = True And fl.Value = True And skucomplete.Value = "" Then
+        MsgBox ("Please fill the SKU# for complete / facelift test")
+        Exit Sub
+    End If
+    
+    If aa.Value = True And fl.Value = True And skufacelift.Value = "" Then
+        MsgBox ("Please fill the SKU# for facelift test")
+        Exit Sub
+    End If
+    
+    If ar = False And hd = False And ag = False Then
+        MsgBox ("Please complete EVALUATION REQUIRED: PRECONDITION data")
+        Exit Sub
+    End If
+End If
+
+    answer = MsgBox("Are you sure the data is already correct?", vbQuestion + vbYesNo)
+    If answer = vbYes Then
+        Cells(lab, 1).Value = regisNum.Value
+        'Cells(lab, 2) = LER.Value & "/" & code.Value
+        Cells(lab, 2) = Trim(xx.Value)
+        Cells(lab, 3).Value = toyname.Value
+            If rap.Value = True Then Cells(lab, 3).Value = toyname.Value & " " & "(RAP)" & "-" & rapv.Value
+            If nonrap.Value = True Then Cells(lab, 3).Value = toyname.Value
+        Cells(lab, 4).Value = Trim(partno.Value)
+        Cells(lab, 5) = yy.Value
+        Cells(lab, 6).Value = qty.Value
+        Cells(lab, 7).Value = stage.Value
+        If ep.Value = True Then Cells(lab, 7).Value = "EP" & " " & stage.Value
+        If fep.Value = True Then Cells(lab, 7).Value = "FEP" & " " & stage.Value
+        If pa.Value = True Then Cells(lab, 7).Value = "PQ" & " " & stage.Value
+        If pp.Value = True Then Cells(lab, 7).Value = "PP" & " " & stage.Value
+        If pq.Value = True Then Cells(lab, 7).Value = "PQ" & " " & stage.Value
+        If ct.Value = True Then Cells(lab, 7).Value = "COMMON TORSO" & " " & stage.Value
+        If cds.Value = True Then Cells(lab, 7).Value = "COMMON DOLLSTAND" & " " & stage.Value
+        If cfep.Value = True Then Cells(lab, 7).Value = "COMPONENT TESTING FEP" & " " & stage.Value
+        If cpp.Value = True Then Cells(lab, 7).Value = "COMPONENT TESTING PP" & " " & stage.Value
+        If dev.Value = True Then Cells(lab, 7).Value = "DEV"
+        If other.Value = True Then Cells(lab, 7).Value = otherx.Value
+        If aa.Value = True Then Cells(lab, 8).Value = "Complete"
+        If fl.Value = True Then Cells(lab, 8).Value = "Facelift"
+        If aa.Value = True And fl.Value = True Then Cells(lab, 8).Value = "Complete / Facelift"
+        If il.Value = True And eastspl = True Then Cells(lab, 9).Value = "IN HOUSE-P2"
+        If il.Value = True And westspl = True Then Cells(lab, 9).Value = "IN HOUSE-P1"
+        If el.Value = True And eastspl = True Then Cells(lab, 9).Value = "EXTERNAL-P2"
+        If el.Value = True And westspl = True Then Cells(lab, 9).Value = "EXTERNAL-P1"
+            Cells(lab, 10).Value = skucomplete.Value
+            Cells(lab, 11).Value = skufacelift.Value
+        If ar.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "AR"
+        If hd.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "HD"
+        If ag.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "AG"
+        If a.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "A"
+        If b.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "B"
+        If c.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "C"
+        If d.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "D"
+        If e.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "E"
+        If f.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "F"
+        If g.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "G"
+        If h.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "H"
+        If i.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "I"
+        If j.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "J"
+        If k.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "K"
+        If l.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "L"
+        If CheckBox1.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "M"
+        If n.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "N"
+        If o.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "O"
+        If p.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "P"
+        If q.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "Q"
+        If r.Value = True Then Cells(lab, 12).Value = Cells(lab, 12).Value & " " & "R"
+        Cells(lab, 13).Value = namerequestor.Value
+        Cells(lab, 12).Value = dept.Value
+        Cells(lab, 15).Value = note1.Value
+        If retain.Value = True Then Cells(lab, 15).Value = "Retainable" & " " & rtn.Value & ", " & note1.Value
+        If nonretain.Value = True Then Cells(lab, 15).Value = "Non Retainable" & ", " & note1.Value
+        Cells(lab, 16).Value = note2.Value
+        If Len(ctrefer.Value) > 1 Then Cells(lab, 16).Value = note2.Value & ", Refer to Common Torso: " & ctrefer.Value & " " & typetorso & "-" & notype
+        If Complexmax = True Then Cells(lab, 16).Value = "Use Matrix Complexity Toy > 4, " & note2.Value
+        If Len(ctrefer.Value) > 1 And Complexmax = True Then Cells(lab, 16).Value = "Use Matrix Complexity Toy > 4, " & ", Refer to Common Torso: " & ctrefer.Value & " " & typetorso & "-" & notype & " " & note2.Value
+        Cells(lab, 17).Value = PRD_QSOP.Value
+        
+        'MsgBox note2.Value
+        '==========Script to update Logbook DOC ( for PP and PQ only )=================
+        If stage.Value <> "REQUAL" And (Left(Cells(lab, 7).Value, 2) = "PP" Or Left(Cells(lab, 7).Value, 2) = "PQ") Then
+        depdmd = MsgBox("Is it dependent demand ?" & vbNewLine & "Answer no will automatically request for COC-DOC. ", vbQuestion + vbYesNo + vbDefaultButton2, "Dependent Demand note")
+        'cocreq = MsgBox("COC/DOC required?", vbQuestion + vbYesNo + vbDefaultButton2, "COC DOC Confirmation")
+            If depdmd = vbNo Then
+                'If cocreq = vbYes Then
+                        Dim dtToday As Date
+                        SKU = Left(Cells(lab, 4).Value, 5)
+                        stagee = Left(Cells(lab, 7).Value, 2)
+                        Batchh = Cells(lab, 2).Value
+                        dtToday = Date
+                            'Check existing SKU on Logbook DOC
+                            sql = "SELECT SKU# FROM LogbookDOC where SKU# = '" & SKU & "' AND Stage='" & stagee & "'"
+                            check = Utilities.IsRecordExist(sql)
+                            If check = True Then
+                                sql2 = "SELECT SKU#, Status from LogbookDOC where SKU# = '" & SKU & "' AND Stage='" & stagee & "' AND Status < '7'"
+                                check = Utilities.IsRecordExist(sql2)
+                                'if SKU exist with status is not release
+                                If check = True Then
+                                    sql = "UPDATE LogbookDOC SET [Batch#] = '" & Batchh & "' where SKU# = '" & SKU & "' AND Stage='" & stagee & "' AND Status < '7'"
+                                    Utilities.sqlProcess (sql)
+                                Else
+                                'if SKU exist with status is release
+                                    sql = "INSERT into LogbookDOC " & "([SKU#] ,[Stage] ,[Batch#], [Sub_Date], [Status]) VALUES " _
+                                    & "('" & SKU & "', '" & stagee & "', '" & Batchh & "', '" & dtToday & "', '6')"
+                                    Utilities.sqlProcess (sql)
+                                End If
+                            Else
+                            ' If SKU not exist on Logbook DOC
+                                sql = "INSERT into LogbookDOC " & "([SKU#] ,[Stage] ,[Batch#], [Sub_Date], [Status] ) VALUES " _
+                                & "('" & SKU & "', '" & stagee & "', '" & Batchh & "', '" & dtToday & "', '6')"
+                                Utilities.sqlProcess (sql)
+                            End If
+                'End If
+            End If
+        End If
+        '=========================================================
+        process.insert_new_data
+        
+        'pressing the printscreen key programmatically
+        
+     
+        Application.SendKeys "(%{1068})"
+        Wait 1
+        Call UserForm_Initialize
+        Call Cleardata
+        ThisWorkbook.Application.Visible = True
+        Worksheets("Insert").Activate
+        Unload Me
+        curdt = Sheets("Insert").Range("A1").Value & "-" & Sheets("Insert").Range("D1").Value
+        ExportForm 1, curdt
+        Sheets("Insert").Range("A1:Z7").ClearContents
+    End If
+End Sub
+Private Sub Cleardata()
+'    dateR.Value = Date
+    'timeR.Value = Time
+    'dateR.Value = Format(Date, "DD-MMM-YY")
+    'timeR.Value = Format(Time, "HH:MM")
+    regisNum.Value = ""
+    requestorid.Value = ""
+    namerequestor.Value = ""
+    dept.Value = ""
+    
+    Complexmin = True
+    Complexmax = False
+    
+    x.Value = False
+    xx.Value = ""
+    yy.Value = ""
+    
+'    low.Value = False
+'    med.Value = False
+'    high.Value = False
+'    cust.Value = False
+    
+    toyname.Value = ""
+    partno.Value = ""
+    qty.Value = ""
+    note1.Value = ""
+    mc.Value = False
+    tp.Value = False
+    ms.Value = False
+    '=================== rap and retain package
+    rap.Value = False
+    nonrap.Value = False
+    retain.Value = False
+    nonretain.Value = False
+    rtn.Value = ""
+    
+    ep.Value = False
+    fep.Value = False
+    pq.Value = False
+    pp.Value = False
+    'nm.Value = False
+    pa.Value = False
+    dev.Value = False
+    stage.Value = ""
+    typetorso.Value = ""
+    'nl.Value = False
+    other.Value = False
+    otherx.Value = ""
+    note2.Value = ""
+    
+    ct.Value = False
+    cds.Value = False
+           
+    cfep.Value = False
+    cpp.Value = False
+        
+    il.Value = False
+    el.Value = False
+    
+    ar.Value = False
+    hd.Value = False
+    ag.Value = False
+    
+    aa.Value = False
+    fl.Value = False
+    a.Value = False
+    b.Value = False
+    c.Value = False
+    d.Value = False
+    e.Value = False
+    f.Value = False
+    g.Value = False
+    h.Value = False
+    i.Value = False
+    j.Value = False
+    k.Value = False
+    l.Value = False
+    CheckBox1.Value = False
+    n.Value = False
+    o.Value = False
+    p.Value = False
+    q.Value = False
+    r.Value = False
+    other2.Value = False
+    qq.Value = ""
+    rr.Value = ""
+    skucomplete.Value = ""
+    skufacelift.Value = ""
+    PRD_QSOP.Value = ""
+    
+    
+    
+    
+End Sub
+
+Private Sub requestorid_Change()
+    If Len(requestorid.Value) = 6 Then
+        sql = "SELECT Employee_main.[EMEMP#], Employee_main.EMNAME, dept.Dept FROM dept, Employee_main WHERE (([dept].[SectCode] = [Employee_main].[EMLOC#] AND [Employee_main].[EMEMP#] = '" & requestorid.Value & "'))"
+        Debug.Print (sql)
+        Set result = sqlGetEmployee(sql)
+        
+        On Error Resume Next
+        
+        'If Not result.EOF And Not result.BOF Then
+         namerequestor.Value = result(1)
+         dept.Value = result(2)
+        'End If
+    End If
+'ER:
+'    MsgBox "Employee Not Found"
+End Sub
+
+Private Sub toyname_Change()
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+FEP_PP_FORM.Height = 660
+FEP_PP_FORM.Width = 540
+
+    Dim rand, yr As String
+    rand = RandString(3)
+    
+    yr = year(Now)
+    regnumbr = yr + "-" + rand
+    
+    'note2 = NOTE UNTUK TESTING METHOD
+    
+    'Assortment tidak di automate karena Assortment untuk Part kosong, sedangkan Assortment untuk IC & MC pakai Dash-Code sendiri (not 9991)
+    
+    
+        'Sql = "SELECT REGIS_NUM FROM Buffer where REGIS_NUM = '" & regnumbr & "'"
+        'check = utilities.IsRecordExist(Sql)
+        'While check = True
+            'rand = RandString(3)
+            'yr = year(Now)
+            'regnumbr = yr + "-" + rand
+        'Wend
+    
+    regisNum.Value = regnumbr
+    
+    Complexmin = True
+    Complexmax = False
+    
+'    combo box for stage
+    stage.Value = "INITIAL"
+    With stage
+        .AddItem "INITIAL"
+        .AddItem "REQUAL"
+        .AddItem "FINAL"
+    End With
+    
+'    combo box for other stage
+    otherx.Value = ""
+    With otherx
+        .AddItem "ENGINEERING EVALUATION"
+        .AddItem "INVESTIGATION SAMPLE"
+        .AddItem "JAPAN TEST"
+        .AddItem "MATERIAL SUBSTITUTE"
+        .AddItem "NEW LINE"
+        .AddItem "NEW MATERIAL"
+        .AddItem "QUALITY AUDIT"
+        .AddItem "TITIPAN"
+        .AddItem "WALMART"
+    End With
+    
+'    Combo box for type torso
+    typetorso.Value = ""
+    With typetorso
+        .AddItem "BARBIE"
+        .AddItem "POSEABLE"
+        .AddItem "KEN"
+        .AddItem "CHELSEA"
+        .AddItem "STACIE"
+    End With
+       
+End Sub
+Private Sub tp_Click()
+
+End Sub
+
+
+'Function RandString(n As Long) As String
+'    'Assumes that Randomize has been invoked by caller
+'    Dim i As Long, j As Long, m As Long, s As String, pool As String
+'    pool = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+'    m = Len(pool)
+'    For i = 1 To n
+'        j = 1 + Int(m * Rnd())
+'        s = s & Mid(pool, j, 1)
+'    Next i
+'    RandString = s
+'End Function
+
+Function RandString(n As Long) As String
+    Dim rString As String
+    Dim iCount As Integer
+    Randomize
+    For iCount = 1 To n
+        If Int((2 * rnd) + 1) = 1 Then
+            rString = rString & Chr(Int(26 * rnd + 65))
+        Else
+             rString = rString & Int(10 * rnd)
+        End If
+
+    Next iCount
+    RandString = rString
+End Function
+
+Private Sub x_Click()
+
+End Sub
+
+Private Sub xx_Change()
+
+End Sub
+
+Private Sub yy_Change()
+
+End Sub
