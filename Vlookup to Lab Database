@@ -1,0 +1,283 @@
+Sub registerlab()
+'Definition only for QE User (QE + Inspector)
+    Dim user As String
+    Dim users(13) As String
+        users(0) = "DELINGGS"   'Lingga
+        users(1) = "ALDIBRAG"   'Aldi
+        users(2) = "SABATHID"   'Nata
+        users(3) = "MANIKURU"   'Urupi
+        users(4) = "HERYANTY"   'Yandhika
+        users(5) = "SARYCIND"   'Cindy
+        users(6) = "NURROHMN"   'Nur Rohmah
+        users(7) = "RENITANO"   'Norma
+        users(8) = "SETYANII"   'Ika
+        users(9) = "INAYAHNU"   'Inayah
+        users(10) = "KINTARED"  'Diko
+        users(11) = "JAFARAH8"  'Jafar
+        users(12) = "FAJARISM"  'Mas Ma'il
+    user = UCase(Environ("username"))
+    Dim access As Boolean
+    Dim a As Integer
+    access = False
+    For a = 0 To 12
+        If users(a) = user Then
+        access = True
+        Exit For
+        End If
+    Next
+
+    'Validation Access to Run Query
+    If access = False Then
+        MsgBox "The user " & user & " does not have access to this button.", vbInformation
+    ElseIf access = True Then
+
+
+
+If IsEmpty(Cells(ActiveCell.Row, 4).Value) = True Or IsEmpty(Range("E2").Value) = True Then
+    MsgBox "Please select row that has data or type the SKU!", vbCritical
+Else
+    If ActiveSheet.Range("D1").Value = "Component Testing Submission FEP" Then
+        CT_FEP_FORM.Show
+    ElseIf ActiveSheet.Range("D1").Value = "Component Testing Submission PP" Then
+        CT_PP_FORM.Show
+    End If
+End If
+
+
+End If
+
+End Sub
+
+Sub Lab_Getdate()
+Application.EnableEvents = False
+Application.Calculation = xlCalculationManual
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+
+SKU = Range("E2").Value
+SKU2 = Range("G2").Value
+    
+    'Lastrow for Initial Data
+    lrowA = Cells(Rows.Count, 13).End(xlUp).Row
+    'Lastrow for Requal Data
+    lRowB = Cells(Rows.Count, 25).End(xlUp).Row
+     
+    Range("CopyAS400").Offset(1, 0).Select
+    Row = ActiveCell.Row
+    Range("M" & Row & ":W" & lrowA).ClearContents
+    Range("Y" & Row & ":AB" & lRowB).ClearContents
+    
+    If ActiveSheet.Range("D1").Value = "Component Testing Submission FEP" Then
+        sqlFEP3 = "SELECT distinct Log_C.[S_D_NAME],logbook2.R_DATE, logbook2.STAGE, logbook2.STATUS, logbook2.FN_QI_QI, logbook2.LER#, logbook2.[DC_C], logbook2.[R_S_1_QI],logbook2.[R_S_2_QI],logbook2.[R_S_3_QI],logbook2.[R_S_4_QI] " & _
+        " from logbook2 INNER JOIN Log_C on logbook2.LER# = log_C.LER# " & _
+        " WHERE logbook2.[S_D_PNUM] = '" & SKU & "' AND logbook2.STAGE = 'COMPONENT TESTING FEP INITIAL' AND logbook2.STATUS <> 'Cancel' OR logbook2.[S_D_PNUM] = '" & SKU2 & "' AND logbook2.STAGE = 'COMPONENT TESTING FEP INITIAL' AND logbook2.STATUS <> 'Cancel' " & _
+        " ORDER BY logbook2.R_DATE DESC"
+        Debug.Print (sqlFEP3)
+        sqlShowsInitial (sqlFEP3)
+    
+        sqlFEP4 = "SELECT distinct Log_P.[S_D_NAME],logbook2.R_DATE, logbook2.STAGE,logbook2.[DC_C] " & _
+        " from logbook2 INNER JOIN Log_P on logbook2.LER# = log_P.LER# " & _
+        " WHERE logbook2.[S_D_PNUM] = '" & SKU & "' AND logbook2.STAGE LIKE '%COMPONENT TESTING FEP%' AND logbook2.STATUS <> 'Cancel' OR logbook2.[S_D_PNUM] = '" & SKU2 & "' AND logbook2.STAGE LIKE '%COMPONENT TESTING FEP%' AND logbook2.STATUS <> 'Cancel' " & _
+        " ORDER BY logbook2.R_DATE DESC"
+        Debug.Print (sqlFEP4)
+        sqlShowsRequal (sqlFEP4)
+    
+    ElseIf ActiveSheet.Range("D1").Value = "Component Testing Submission PP" Then
+        sqlPP3 = "SELECT distinct Log_C.[S_D_NAME],logbook2.R_DATE, logbook2.STAGE, logbook2.STATUS, logbook2.FN_QI_QI, Logbook2.LER#, logbook2.[DC_C], logbook2.[R_S_1_QI],logbook2.[R_S_2_QI],logbook2.[R_S_3_QI],logbook2.[R_S_4_QI] " & _
+        " from logbook2 INNER JOIN Log_C on logbook2.LER# = log_C.LER# " & _
+        " WHERE logbook2.[S_D_PNUM] = '" & SKU & "' AND logbook2.STAGE LIKE '%COMPONENT TESTING PP INITIAL%' AND logbook2.STATUS <> 'Cancel' OR logbook2.[S_D_PNUM] = '" & SKU2 & "' AND logbook2.STAGE LIKE '%COMPONENT TESTING PP INITIAL%' AND logbook2.STATUS <> 'Cancel' " & _
+        " ORDER BY logbook2.R_DATE DESC"
+        Debug.Print (sqlPP3)
+        sqlShowsInitial (sqlPP3)
+       
+        sqlPP4 = "SELECT distinct Log_P.[S_D_NAME],logbook2.R_DATE, logbook2.STAGE,logbook2.[DC_C] " & _
+        " from logbook2 INNER JOIN Log_P on logbook2.LER# = log_P.LER# " & _
+        " WHERE logbook2.[S_D_PNUM] = '" & SKU & "' AND logbook2.STAGE LIKE '%COMPONENT TESTING PP%' AND logbook2.STATUS <> 'Cancel' OR logbook2.[S_D_PNUM] = '" & SKU2 & "' AND logbook2.STAGE LIKE '%COMPONENT TESTING PP %' AND logbook2.STATUS <> 'Cancel' " & _
+        " ORDER BY logbook2.R_DATE DESC"
+        Debug.Print (sqlPP4)
+        sqlShowsRequal (sqlPP4)
+    End If
+
+    Call Vlookup
+    
+Application.EnableEvents = True
+Application.Calculation = xlCalculationAutomatic
+Application.ScreenUpdating = True
+Application.DisplayAlerts = True
+End Sub
+Public Function sqlShowsInitial(strSql)
+    'Open Connection to SQL Server
+    Set cn = New ADODB.Connection
+    Set rs = New ADODB.Recordset
+    strConn = "Driver={SQL Server}; Server=DCKR00802521; Database=MechLab; UID=qa; PWD=Qualitylab1234;"
+    cn.Open strConn
+    On Error Resume Next
+    rs.Open strSql, cn
+    
+    'Jika Ada Error Tutup Koneksi
+    If Err.Number <> 0 Then
+        errCode = Err.Number
+        On Error Resume Next
+        Set cn = Nothing
+        cn.Close
+        Set rs = Nothing
+        rs.Close
+        On Error GoTo 0
+    Else
+    Row = ActiveCell.Row
+        irows = Row
+        While Not rs.EOF
+            icols = 13
+            For k = 0 To rs.Fields.Count - 1
+                If ActiveSheet.Range("D1").Value = "Component Testing Submission FEP" Then
+                    Sheets("Component Testing FEP").Cells(irows, icols).Value = rs.Fields(k).Value
+                ElseIf ActiveSheet.Range("D1").Value = "Component Testing Submission PP" Then
+                    Sheets("Component Testing PP").Cells(irows, icols).Value = rs.Fields(k).Value
+                End If
+                icols = icols + 1
+            Next k
+            rs.MoveNext
+            irows = irows + 1
+        Wend
+        errCode = Err.Number
+        On Error Resume Next
+        Set cn = Nothing
+        cn.Close
+        Set rs = Nothing
+        rs.Close
+    End If
+    
+    On Error GoTo 0
+End Function
+Public Function sqlShowsRequal(strSql)
+    Set cn = New ADODB.Connection
+    Set rs = New ADODB.Recordset
+    strConn = "Driver={SQL Server}; Server=DCKR00802521; Database=MechLab; UID=qa; PWD=Qualitylab1234;"
+    cn.Open strConn
+    On Error Resume Next
+    rs.Open strSql, cn
+    
+    If Err.Number <> 0 Then
+        errCode = Err.Number
+        On Error Resume Next
+        Set cn = Nothing
+        cn.Close
+        Set rs = Nothing
+        rs.Close
+        On Error GoTo 0
+    Else
+    Row = ActiveCell.Row
+        irows = Row
+        While Not rs.EOF
+            icols = 25
+            For k = 0 To rs.Fields.Count - 1
+               If Thisworksheets.Range("D1").Value = "Component Testing Submission FEP" Then
+                    Sheets("Component Testing FEP").Cells(irows, icols).Value = rs.Fields(k).Value
+                ElseIf Thisworksheets.Range("D1").Value = "Component Testing Submission PP" Then
+                    Sheets("Component Testing PP").Cells(irows, icols).Value = rs.Fields(k).Value
+                End If
+                icols = icols + 1
+            Next k
+            rs.MoveNext
+            irows = irows + 1
+        Wend
+        errCode = Err.Number
+        On Error Resume Next
+        Set cn = Nothing
+        cn.Close
+        Set rs = Nothing
+        rs.Close
+    End If
+    
+    On Error GoTo 0
+End Function
+Sub Vlookup()
+    'Tabel CT Form
+    lastrow = Cells(Rows.Count, 4).End(xlUp).Row
+    'Tabel CT Initial
+    Lastrow2 = Cells(Rows.Count, 13).End(xlUp).Row
+    'Tabel CT Requal
+    Lastrow3 = Cells(Rows.Count, 25).End(xlUp).Row
+    
+    Range("CopyAS400").Offset(1, 0).Select
+    Row = ActiveCell.Row
+    
+    For i = Row To lastrow
+        partname = Trim(Cells(i, 4).Value)
+        If Cells(i, 5).Value = "No" Then
+            
+            For j = Row To Lastrow2
+                If Trim(Cells(j, 13).Value) = partname Or Cells(j, 13).Value = partname Then
+                            Cells(i, 6) = Cells(j, 14)
+                            Cells(i, 7) = Cells(j, 18)
+                            Cells(i, 8) = Cells(j, 17)
+                                If Cells(i, 8).Value < 100 Then
+                                    Cells(i, 8) = Cells(j, 20)
+                                End If
+                                If Cells(i, 8).Value < 100 Then
+                                    Cells(i, 8) = Cells(j, 21)
+                                End If
+                                If Cells(i, 8).Value < 100 Then
+                                    Cells(i, 8) = Cells(j, 22)
+                                End If
+                                If Cells(i, 8).Value < 100 Then
+                                    Cells(i, 8) = Cells(j, 23)
+                                End If
+                                If Cells(i, 8).Value < 100 Then
+                                    Cells(i, 8) = Cells(j, 17)
+                                End If
+                            Cells(i, 9) = Cells(j, 19)
+                            Exit For
+                        End If
+            Next j
+            
+            For k = Row To Lastrow3
+            If (Trim(Cells(k, 25).Value) = partname Or Cells(k, 25).Value = partname) And Cells(i, 9).Value <> "" And Cells(k, 28).Value = "-" Then
+                Cells(i, 9).Value = Cells(k, 28)
+            Exit For
+
+            End If
+            Next k
+        
+                'QI 100 no critical
+            If Cells(i, 8).Value = 100 And (Cells(i, 9).Value = "-" Or Cells(i, 9).Value = "0") Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(198, 224, 180)
+                'QI tidak 100
+            ElseIf Cells(i, 8).Value < 100 And Cells(i, 8).Value <> "" Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 192, 0)
+                'Ada issue critical
+                'Cells(i, 8).Value = 100 And
+            ElseIf Cells(i, 9).Value > 0 Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 0, 0)
+                'Test masih ongoing
+            ElseIf Cells(i, 8).Value = "" And Cells(i, 4).Value <> "" Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 255, 0)
+                'Blank Space
+            ElseIf Cells(i, 8).Value = "" And Cells(i, 4).Value = "" Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 255, 255)
+            End If
+                    
+        ElseIf Cells(i, 5).Value <> "No" Then
+            If Cells(i, 8).Value = 100 And (Cells(i, 9).Value = "-" Or Cells(i, 9).Value = "0") Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(198, 224, 180)
+                                    
+            ElseIf Cells(i, 8).Value < 100 And Cells(i, 8).Value <> "" Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 192, 0)
+                              
+            ElseIf Cells(i, 9).Value > 0 Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 0, 0)
+                                    
+            ElseIf Cells(i, 8).Value = "" And Cells(i, 4).Value <> "" Then
+                Range(Cells(i, 1), Cells(i, 9)).Interior.Color = RGB(255, 255, 0)
+                
+            End If
+        End If
+    Next i
+End Sub
+
+
+Sub FEP_PP_FORM()
+
+FEP_PP_FORM.Show
+
+End Sub
