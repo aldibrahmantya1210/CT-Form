@@ -1,0 +1,107 @@
+Sub insert_new_data()
+
+
+lab = 1
+MNTH = Month(Now)
+
+
+Dim arr(30) As Variant
+
+With ActiveSheet
+For i = 1 To 17
+If Len(.Cells(lab, i).Value) = 0 Then
+arr(i) = "-"
+Else
+arr(i) = .Cells(lab, i).Value
+End If
+Next
+
+REGIS_NUM = arr(1)
+batch_lims = Trim(arr(2))
+S_D_NAME = arr(3)
+S_D_PNUM = Trim(arr(4))
+S_D_ASSORT = arr(5)
+s_d_qty = arr(6)
+stage = arr(7)
+t_t_c = arr(8)
+perf = arr(9)
+s_f_c = arr(10)
+s_f_f = arr(11)
+test = arr(12)
+r_name = arr(13)
+r_dept = arr(14)
+s_desc = arr(15)
+p_o_e = arr(16)
+p_o_q = arr(17)
+End With
+
+
+sql = "INSERT INTO buffer " & _
+"VALUES ('" & REGIS_NUM & "', '" & batch_lims & "', '" & S_D_NAME & "', '" & S_D_PNUM & "' ,'" & S_D_ASSORT & "' ,'" & s_d_qty & _
+"', '" & stage & "', '" & t_t_c & "' ,'" & perf & "' ,'" & s_f_c & "' ,'" & s_f_f & _
+"', '" & test & "', '" & r_name & "' ,'" & r_dept & _
+"', '" & s_desc & "', '" & p_o_e & "' ,'" & p_o_q & "')"
+
+Debug.Print (sql)
+Utilities.sqlProcess (sql)
+
+End Sub
+
+Sub Wait(ByVal nSec As Long)
+nSec = nSec + Timer
+While nSec > Timer
+DoEvents
+Wend
+End Sub
+Sub ExportForm(ByVal LERNumber As Single, ByVal curdt As String)
+Workbooks.Add
+
+ActiveSheet.Paste
+
+
+
+ResizeImage
+
+SaveImage (LERNumber), curdt
+
+ActiveWindow.Close (0)
+End Sub
+Sub CropImage()
+Selection.ShapeRange.LockAspectRatio = msoFalse
+Selection.ShapeRange.IncrementLeft 240.75
+Selection.ShapeRange.IncrementTop 55.5
+Selection.ShapeRange.ScaleWidth 0.749187419, msoFalse, msoScaleFromTopLeft
+Selection.ShapeRange.ScaleHeight 0.9277253496, msoFalse, msoScaleFromTopLeft
+Selection.ShapeRange.PictureFormat.Crop.PictureWidth = 959
+Selection.ShapeRange.PictureFormat.Crop.PictureHeight = 767
+Selection.ShapeRange.PictureFormat.Crop.PictureOffsetX = -120
+Selection.ShapeRange.PictureFormat.Crop.PictureOffsetY = -27
+ActiveWindow.SmallScroll Down:=9
+ActiveWindow.ScrollColumn = 2
+ActiveWindow.ScrollColumn = 3
+ActiveWindow.ScrollColumn = 4
+ActiveWindow.SmallScroll Down:=6
+Selection.ShapeRange.LockAspectRatio = msoFalse
+Selection.ShapeRange.ScaleWidth 0.6653872702, msoFalse, msoScaleFromTopLeft
+Selection.ShapeRange.ScaleHeight 0.8895934272, msoFalse, msoScaleFromTopLeft
+Selection.ShapeRange.PictureFormat.Crop.PictureWidth = 959
+Selection.ShapeRange.PictureFormat.Crop.PictureHeight = 767
+Selection.ShapeRange.PictureFormat.Crop.PictureOffsetX = 0
+Selection.ShapeRange.PictureFormat.Crop.PictureOffsetY = 11
+ActiveWindow.SmallScroll Down:=-27
+End Sub
+Sub MoveImage()
+Selection.ShapeRange.IncrementLeft -240.75
+Selection.ShapeRange.IncrementTop -55.5000787402
+End Sub
+Sub ResizeImage()
+Selection.ShapeRange.ScaleWidth 0.8804734283, msoFalse, msoScaleFromTopLeft
+Selection.ShapeRange.ScaleHeight 0.8804733728, msoFalse, msoScaleFromTopLeft
+End Sub
+Sub SaveImage(LERNumber As Single, curdt As String)
+ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:= _
+"\\apckraNEFA01PV\Kolaka\Lab Submission Form\PDF\ " & curdt & ".pdf", Quality:=xlQualityMinimum, _
+IncludeDocProperties:=True, IgnorePrintAreas:=False, OpenAfterPublish:= _
+False
+
+End Sub
